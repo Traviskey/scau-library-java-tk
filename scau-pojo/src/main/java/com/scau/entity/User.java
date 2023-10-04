@@ -17,19 +17,33 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private Long userId;
 
-    //微信用户唯一标识
-    private String openid;
 
     //姓名
-    private String name;
+    private String username;
+
+    //密码
+    private String password;
+
+    private String cardName;
+
+    private String cardNumber;
+
+    private String ruleNumber;
+
+    private String createTime;
+
+    private String updateTime;
+
+    //状态
+    private Integer status;
 
     //手机号
-    private String phone;
+    private String mobile;
 
     //性别 0 女 1 男
-    private String sex;
+    private String gender;
 
     //身份证号
     private String idNumber;
@@ -37,6 +51,20 @@ public class User implements Serializable {
     //头像
     private String avatar;
 
-    //注册时间
-    private LocalDateTime createTime;
+    //用户昵称
+    private String nickname;
+
+    //用户生日
+    private String birthday;
+
+    //用户所在城市编码
+    private String cityCode;
+
+    //用户所在城市编码
+    private String provinceCode;
+
+    //用户职业
+    private String profession;
+
+
 }
