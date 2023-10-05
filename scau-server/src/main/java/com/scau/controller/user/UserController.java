@@ -1,6 +1,8 @@
 package com.scau.controller.user;
 
 import com.scau.constant.JwtClaimsConstant;
+import com.scau.dto.CartAddDTO;
+import com.scau.dto.CollectionAddDTO;
 import com.scau.dto.UserLoginDTO;
 import com.scau.dto.UserPageQueryDTO;
 import com.scau.entity.User;
@@ -70,9 +72,35 @@ public class UserController {
         return Result.success(userService.getUserData(user));
     }
 
-@PostMapping("/search_book_page" )
+    @PostMapping("/search_book_page" )
     public Result<PageResult> page(@RequestBody UserPageQueryDTO userPageQueryDTO){
         PageResult pageResult = userService.pageQuery(userPageQueryDTO);
+        return Result.success(pageResult);
+    }
+
+    @PostMapping("/cart_add")
+    public Result addCart(@RequestBody CartAddDTO cartAddDTO){
+        Integer flag = userService.addCart(cartAddDTO);
+        if(flag == 1) return Result.success();
+        else return Result.error("重复！");
+    }
+
+    @PostMapping("/search_cart_page")
+    public Result<PageResult> cart(@RequestBody UserPageQueryDTO userPageQueryDTO){
+        PageResult pageResult = userService.cartQuery(userPageQueryDTO);
+        return Result.success(pageResult);
+    }
+
+    @PostMapping("/collection_add")
+    public Result addCollection(@RequestBody CollectionAddDTO collectionAddDTO){
+        Integer flag = userService.addCollection(collectionAddDTO);
+        if(flag == 1) return Result.success();
+        else return Result.error("重复！");
+    }
+
+    @PostMapping("/search_collection_page")
+    public Result<PageResult> collection(@RequestBody UserPageQueryDTO userPageQueryDTO){
+        PageResult pageResult = userService.collectionQuery(userPageQueryDTO);
         return Result.success(pageResult);
     }
 

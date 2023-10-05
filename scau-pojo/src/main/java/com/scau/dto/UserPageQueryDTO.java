@@ -22,4 +22,6 @@ public class UserPageQueryDTO implements Serializable {
     private String book_type = null;
 
     private String book_author = null;
+
+    private String userId;
 }

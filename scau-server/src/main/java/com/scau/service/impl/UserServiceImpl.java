@@ -4,19 +4,25 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.scau.constant.MessageConstant;
 import com.scau.constant.StatusConstant;
+import com.scau.dto.CartAddDTO;
+import com.scau.dto.CollectionAddDTO;
 import com.scau.dto.UserLoginDTO;
 import com.scau.dto.UserPageQueryDTO;
 import com.scau.entity.Books;
+import com.scau.entity.CartBooks;
+import com.scau.entity.CollectionBooks;
 import com.scau.entity.User;
 import com.scau.exception.AccountLockedException;
 import com.scau.exception.AccountNotFoundException;
 import com.scau.exception.PasswordErrorException;
 import com.scau.mapper.UserMapper;
 import com.scau.result.PageResult;
+import com.scau.result.Result;
 import com.scau.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -90,5 +96,79 @@ public class UserServiceImpl implements UserService {
 
 
 
+    }
+
+
+    @Override
+    public Integer addCart(CartAddDTO cartAddDTO) {
+        CartBooks cartBooks = null;
+        Integer flag1 = userMapper.checkTableExists1(cartAddDTO);
+        if(flag1 == 0) {
+            userMapper.createTable1(cartAddDTO);
+        }
+
+
+        Integer flag2 = userMapper.checkBookExists1(cartAddDTO);
+
+        if(flag2 == 0) {
+            cartBooks = userMapper.cateGet(cartAddDTO);
+            cartBooks.setUserId(cartAddDTO.getUserId());
+            userMapper.insertData1(cartBooks);
+            return 1;
+        }
+
+        else return 0;
+
+    }
+
+    @Override
+    public PageResult cartQuery(UserPageQueryDTO userPageQueryDTO) {
+        PageHelper.startPage(userPageQueryDTO.getPageNum(),userPageQueryDTO.getPageSize());
+
+
+
+        Page<CartBooks> page = userMapper.cartQuery(userPageQueryDTO);
+
+        long total = page.getTotal();
+
+        List<CartBooks> records = page.getResult();
+
+        return new PageResult(total,records);
+    }
+
+    @Override
+    public Integer addCollection(CollectionAddDTO collectionAddDTO) {
+        CollectionBooks collectionBooks = null;
+        Integer flag1 = userMapper.checkTableExists2(collectionAddDTO);
+        if(flag1 == 0) {
+            userMapper.createTable2(collectionAddDTO);
+        }
+
+
+        Integer flag2 = userMapper.checkBookExists2(collectionAddDTO);
+
+        if(flag2 == 0) {
+            collectionBooks = userMapper.collectionGet(collectionAddDTO);
+            collectionBooks.setUserId(collectionAddDTO.getUserId());
+            userMapper.insertData2(collectionBooks);
+            return 1;
+        }
+
+        else return 0;
+    }
+
+    @Override
+    public PageResult collectionQuery(UserPageQueryDTO userPageQueryDTO) {
+        PageHelper.startPage(userPageQueryDTO.getPageNum(),userPageQueryDTO.getPageSize());
+
+
+
+        Page<CollectionBooks> page = userMapper.collectionQuery(userPageQueryDTO);
+
+        long total = page.getTotal();
+
+        List<CollectionBooks> records = page.getResult();
+
+        return new PageResult(total,records);
     }
 }
