@@ -179,5 +179,10 @@ public class AdminServiceImpl implements AdminService {
         adminMapper.updateInfo(systemDTO);
     }
 
+    @Override
+    public void setBookType(String bookType) {
+        adminMapper.setBookType(bookType);
+    }
+
 
 }

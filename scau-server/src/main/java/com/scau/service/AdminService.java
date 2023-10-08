@@ -45,4 +45,6 @@ public interface AdminService {
     SystemVO getsystem();
 
     void updateInfo(SystemDTO systemDTO);
+
+    void setBookType(String bookType);
 }

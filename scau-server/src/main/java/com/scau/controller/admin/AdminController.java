@@ -100,7 +100,10 @@ public class AdminController {
 
     @GetMapping("/delete_booktype/{typeId}")
     public Result deleteBookType(@PathVariable("typeId") Integer typeId){
+
+        Type type = adminService.getTypeById(typeId);
         adminService.deleteBookType(typeId);
+        adminService.setBookType(type.getBookType());
         return Result.success();
     }
 

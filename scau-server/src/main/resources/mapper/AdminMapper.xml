@@ -45,6 +45,12 @@
            postcode = #{postcode}
 
     </update>
+    <update id="setBookType">
+        update t_books
+        set
+            book_type = null
+        where book_type = #{bookType}
+    </update>
 
 
     <delete id="deleteBook">

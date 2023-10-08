@@ -58,4 +58,6 @@ public interface AdminMapper {
     SystemVO getsystem();
 
     void updateInfo(SystemDTO systemDTO);
+
+    void setBookType(String bookType);
 }
