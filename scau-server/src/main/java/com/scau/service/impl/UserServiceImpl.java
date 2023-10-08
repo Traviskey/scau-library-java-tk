@@ -4,14 +4,8 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.scau.constant.MessageConstant;
 import com.scau.constant.StatusConstant;
-import com.scau.dto.CartAddDTO;
-import com.scau.dto.CollectionAddDTO;
-import com.scau.dto.UserLoginDTO;
-import com.scau.dto.UserPageQueryDTO;
-import com.scau.entity.Books;
-import com.scau.entity.CartBooks;
-import com.scau.entity.CollectionBooks;
-import com.scau.entity.User;
+import com.scau.dto.*;
+import com.scau.entity.*;
 import com.scau.exception.AccountLockedException;
 import com.scau.exception.AccountNotFoundException;
 import com.scau.exception.PasswordErrorException;
@@ -19,6 +13,7 @@ import com.scau.mapper.UserMapper;
 import com.scau.result.PageResult;
 import com.scau.result.Result;
 import com.scau.service.UserService;
+import com.scau.vo.CategoryVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -123,6 +118,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageResult cartQuery(UserPageQueryDTO userPageQueryDTO) {
+        CartAddDTO cartAddDTO = new CartAddDTO();
+        cartAddDTO.setUserId(userPageQueryDTO.getUserId());
+        Integer flag1 = userMapper.checkTableExists1(cartAddDTO);
+        if(flag1 == 0) {
+            userMapper.createTable1(cartAddDTO);
+        }
         PageHelper.startPage(userPageQueryDTO.getPageNum(),userPageQueryDTO.getPageSize());
 
 
@@ -157,8 +158,40 @@ public class UserServiceImpl implements UserService {
         else return 0;
     }
 
+    public Integer addOrder(OrderAddDTO orderAddDTO){
+        OrderBooks orderBooks = new OrderBooks();
+        Integer flag1 = userMapper.checkTableExists3(orderAddDTO);
+        if(flag1 == 0) {
+            userMapper.createTable5(orderAddDTO);
+        }
+
+
+        Integer flag2 = userMapper.checkBookExists3(orderAddDTO);
+
+        Integer userId = orderAddDTO.getUserId();
+
+        orderAddDTO.setAddress(userMapper.getAddress(userId));
+        orderAddDTO.setCardName(userMapper.getCardName(userId));
+
+        if(flag2 == 0) {
+            userMapper.insertData3(orderAddDTO);
+            OrderAddDTO orderAddDTO1 = userMapper.getinsertData3(orderAddDTO);
+            userMapper.insertTotalData(orderAddDTO1);
+            userMapper.deleteCartByBookName(orderAddDTO);
+            return 1;
+        }
+
+        else return 0;
+    }
+
     @Override
     public PageResult collectionQuery(UserPageQueryDTO userPageQueryDTO) {
+        CollectionAddDTO collectionAddDTO = new CollectionAddDTO();
+        collectionAddDTO.setUserId(userPageQueryDTO.getUserId());
+        Integer flag1 = userMapper.checkTableExists2(collectionAddDTO);
+        if(flag1 == 0) {
+            userMapper.createTable2(collectionAddDTO);
+        }
         PageHelper.startPage(userPageQueryDTO.getPageNum(),userPageQueryDTO.getPageSize());
 
 
@@ -170,5 +203,67 @@ public class UserServiceImpl implements UserService {
         List<CollectionBooks> records = page.getResult();
 
         return new PageResult(total,records);
+    }
+
+    public PageResult orderQuery(OrderPageQueryDTO orderPageQueryDTO){
+        OrderAddDTO orderAddDTO = new OrderAddDTO();
+        orderAddDTO.setUserId(orderPageQueryDTO.getUserId());
+        Integer flag1 = userMapper.checkTableExists3(orderAddDTO);
+        if(flag1 == 0) {
+            userMapper.createTable5(orderAddDTO);
+        }
+        PageHelper.startPage(orderPageQueryDTO.getPageNum(),orderPageQueryDTO.getPageSize());
+
+
+
+        Page<OrderInfo> page = userMapper.orderQuery(orderPageQueryDTO);
+
+        long total = page.getTotal();
+
+        List<OrderInfo> records = page.getResult();
+
+        return new PageResult(total,records);
+    }
+
+
+
+    @Override
+    public User getUserById(Integer userId) {
+        long userid = userId;
+        User user = userMapper.getByUserid(userid);
+        return user;
+    }
+
+    @Override
+    public void updateInfo(User user) {
+        String password = user.getPassword();
+        user.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
+        userMapper.updateInfo(user);
+    }
+
+    @Override
+    public void register(User user) {
+        String password = user.getPassword();
+        user.setPassword(DigestUtils.md5DigestAsHex(password.getBytes()));
+        userMapper.register(user);
+        Integer userId = userMapper.getUserid(user.getUsername());
+        userMapper.createTable3(userId);
+        userMapper.createTable4(userId);
+    }
+
+    @Override
+    public CategoryVO getCategory() {
+        CategoryVO categoryVO = userMapper.getCategory();
+        return categoryVO;
+    }
+
+    @Override
+    public void deleteCart(CartAddDTO cartAddDTO) {
+        userMapper.deleteCart(cartAddDTO);
+    }
+
+    @Override
+    public void deleCollection(CollectionAddDTO collectionAddDTO) {
+        userMapper.deleteCollection(collectionAddDTO);
     }
 }

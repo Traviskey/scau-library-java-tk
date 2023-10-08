@@ -51,20 +51,10 @@ public class User implements Serializable {
     //头像
     private String avatar;
 
-    //用户昵称
-    private String nickname;
+    private String address;
 
-    //用户生日
-    private String birthday;
 
-    //用户所在城市编码
-    private String cityCode;
 
-    //用户所在城市编码
-    private String provinceCode;
-
-    //用户职业
-    private String profession;
 
 
 }

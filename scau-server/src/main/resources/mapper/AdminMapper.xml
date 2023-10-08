@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.scau.mapper.AdminMapper">
+
+    <insert id="addBook">
+        insert into t_books (book_number, book_name, book_author, book_type, book_description)
+        values (#{bookNumber},#{bookName},#{bookAuthor},#{bookType},#{bookDescription})
+    </insert>
+    <insert id="addBookType">
+        insert into t_type (book_type, book_type_description) VALUES (#{bookType},#{bookTypeDescription})
+    </insert>
+    <update id="updateBook">
+        update t_books
+        set
+            book_name = #{bookName},
+            book_author = #{bookAuthor},
+            book_type = #{bookType},
+            book_description = #{bookDescription}
+        where book_id = #{bookNumber}
+    </update>
+    <update id="updateType">
+        update t_type
+        set
+            book_type = #{bookType},
+            book_type_description = #{bookTypeDescription}
+        where book_type_number = #{bookTypeNumber}
+    </update>
+    <update id="setadminorderStatus">
+        update t_order
+        set
+            order_status = 1
+        where order_number = #{orderNumber} and card_name = #{cardName}
+    </update>
+    <update id="setuserorderStatus">
+        update t_#{userId}_o
+        set
+            order_status = 1
+        where card_name = #{cardName} and order_number = #{orderNumber}
+    </update>
+    <update id="updateInfo">
+        update t_systeminfo
+        set
+           tele = #{tele},
+           postcode = #{postcode}
+
+    </update>
+
+
+    <delete id="deleteBook">
+        delete from t_books where book_id = #{bookId}
+    </delete>
+    <delete id="dekleteBookType">
+        delete
+        from t_type
+        where book_type_number = #{typeId}
+    </delete>
+    <select id="typeQuery" resultType="com.scau.entity.Type">
+        select * from t_type
+    </select>
+    <select id="getTypeById" resultType="com.scau.entity.Type">
+        select * from t_type
+        where book_type_number = #{typeId}
+    </select>
+    <select id="adminorderQuery" resultType="com.scau.entity.OrderInfo">
+        select * from t_order
+    </select>
+    <select id="getUserId" resultType="java.lang.Integer">
+        select user_id from t_users where card_name = #{cardName}
+    </select>
+    <select id="getOrderStatus" resultType="java.lang.Integer">
+        select order_status from t_order where order_number = #{orderNumber} and card_name = #{cardName}
+    </select>
+    <select id="getUser" resultType="com.scau.entity.User">
+        select * from t_users
+    </select>
+    <select id="getsystem" resultType="com.scau.vo.SystemVO">
+        select * from t_systeminfo
+    </select>
+
+</mapper>

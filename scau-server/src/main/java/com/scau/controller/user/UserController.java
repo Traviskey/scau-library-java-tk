@@ -1,23 +1,18 @@
 package com.scau.controller.user;
 
 import com.scau.constant.JwtClaimsConstant;
-import com.scau.dto.CartAddDTO;
-import com.scau.dto.CollectionAddDTO;
-import com.scau.dto.UserLoginDTO;
-import com.scau.dto.UserPageQueryDTO;
+import com.scau.dto.*;
 import com.scau.entity.User;
 import com.scau.properties.JwtProperties;
 import com.scau.result.PageResult;
 import com.scau.result.Result;
 import com.scau.service.UserService;
 import com.scau.utils.JwtUtil;
+import com.scau.vo.CategoryVO;
 import com.scau.vo.UserLoginVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -85,15 +80,39 @@ public class UserController {
         else return Result.error("重复！");
     }
 
+    /**
+     * 时间不够，delete和add的dto可以通用，就不再写另一个CartDelete了
+     * @return
+     */
+    @PostMapping("/cart_delete")
+    public Result deleteCart(@RequestBody CartAddDTO cartAddDTO){
+        userService.deleteCart(cartAddDTO);
+        return Result.success();
+    }
+
+    @PostMapping("/collection_delete")
+    public Result deleCollection(@RequestBody CollectionAddDTO collectionAddDTO){
+        userService.deleCollection(collectionAddDTO);
+        return Result.success();
+    }
+
     @PostMapping("/search_cart_page")
     public Result<PageResult> cart(@RequestBody UserPageQueryDTO userPageQueryDTO){
         PageResult pageResult = userService.cartQuery(userPageQueryDTO);
         return Result.success(pageResult);
     }
 
+
     @PostMapping("/collection_add")
     public Result addCollection(@RequestBody CollectionAddDTO collectionAddDTO){
         Integer flag = userService.addCollection(collectionAddDTO);
+        if(flag == 1) return Result.success();
+        else return Result.error("重复！");
+    }
+
+    @PostMapping("/order_add")
+    public Result addOrder(@RequestBody OrderAddDTO orderAddDTO){
+        Integer flag = userService.addOrder(orderAddDTO);
         if(flag == 1) return Result.success();
         else return Result.error("重复！");
     }
@@ -103,6 +122,39 @@ public class UserController {
         PageResult pageResult = userService.collectionQuery(userPageQueryDTO);
         return Result.success(pageResult);
     }
+
+    @PostMapping("/search_order_page")
+    public Result<PageResult> order(@RequestBody OrderPageQueryDTO orderPageQueryDTO){
+        PageResult pageResult = userService.orderQuery(orderPageQueryDTO);
+        return Result.success(pageResult);
+    }
+
+    @GetMapping("/get_information/{userId}")
+    public Result<User> information(@PathVariable("userId") Integer userId){
+
+        User user = userService.getUserById(userId);
+        return Result.success(user);
+    }
+
+    @PostMapping("/update_info")
+    public Result updateInfo(@RequestBody User user){
+        userService.updateInfo(user);
+        return Result.success();
+    }
+
+    @PostMapping("/register")
+    public Result register(@RequestBody User user){
+        userService.register(user);
+        return Result.success();
+    }
+
+    @GetMapping("/searchCategory")
+    public Result<CategoryVO> searchCategory(){
+        CategoryVO categoryVO = userService.getCategory();
+        return Result.success(categoryVO);
+    }
+
+
 
 
 }

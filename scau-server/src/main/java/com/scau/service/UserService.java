@@ -1,12 +1,10 @@
 package com.scau.service;
 
-import com.scau.dto.CartAddDTO;
-import com.scau.dto.CollectionAddDTO;
-import com.scau.dto.UserLoginDTO;
-import com.scau.dto.UserPageQueryDTO;
+import com.scau.dto.*;
 import com.scau.entity.User;
 import com.scau.result.PageResult;
 import com.scau.result.Result;
+import com.scau.vo.CategoryVO;
 
 public interface UserService {
     /**
@@ -27,4 +25,20 @@ public interface UserService {
     Integer addCollection(CollectionAddDTO collectionAddDTO);
 
     PageResult collectionQuery(UserPageQueryDTO userPageQueryDTO);
+
+    User getUserById(Integer userId);
+
+    void updateInfo(User user);
+
+    void register(User user);
+
+    CategoryVO getCategory();
+
+    void deleteCart(CartAddDTO cartAddDTO);
+
+    Integer addOrder(OrderAddDTO orderAddDTO);
+
+    PageResult orderQuery(OrderPageQueryDTO orderPageQueryDTO);
+
+    void deleCollection(CollectionAddDTO collectionAddDTO);
 }

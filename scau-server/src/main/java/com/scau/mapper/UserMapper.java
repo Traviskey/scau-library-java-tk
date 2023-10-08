@@ -1,13 +1,9 @@
 package com.scau.mapper;
 
 import com.github.pagehelper.Page;
-import com.scau.dto.CartAddDTO;
-import com.scau.dto.CollectionAddDTO;
-import com.scau.dto.UserPageQueryDTO;
-import com.scau.entity.Books;
-import com.scau.entity.CartBooks;
-import com.scau.entity.CollectionBooks;
-import com.scau.entity.User;
+import com.scau.dto.*;
+import com.scau.entity.*;
+import com.scau.vo.CategoryVO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -50,4 +46,41 @@ public interface UserMapper {
     Page<CartBooks> cartQuery(UserPageQueryDTO userPageQueryDTO);
 
     Page<CollectionBooks> collectionQuery(UserPageQueryDTO userPageQueryDTO);
+
+    void updateInfo(User user);
+
+    void register(User user);
+
+    void createTable3(Integer userId);
+
+    void createTable4(Integer userId);
+
+    Integer getUserid(String username);
+
+
+    CategoryVO getCategory();
+
+    void deleteCart(CartAddDTO cartAddDTO);
+
+    Integer checkTableExists3(OrderAddDTO orderAddDTO);
+
+    void createTable5(OrderAddDTO orderAddDTO);
+
+    Integer checkBookExists3(OrderAddDTO orderAddDTO);
+
+    void insertData3(OrderAddDTO orderAddDTO);
+
+    String getAddress(Integer userId);
+
+    String getCardName(Integer userId);
+
+    void deleteCartByBookName(OrderAddDTO orderAddDTO);
+
+    Page<OrderInfo> orderQuery(OrderPageQueryDTO orderPageQueryDTO);
+
+    void deleteCollection(CollectionAddDTO collectionAddDTO);
+
+    void insertTotalData(OrderAddDTO orderAddDTO);
+
+    OrderAddDTO getinsertData3(OrderAddDTO orderAddDTO);
 }

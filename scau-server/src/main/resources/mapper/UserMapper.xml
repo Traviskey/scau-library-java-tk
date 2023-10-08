@@ -11,8 +11,6 @@
             `book_author`      varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL COMMENT '图书作者',
             `book_type`        varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL COMMENT '图书类别',
             `book_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图书描述',
-            `create_time`      datetime                                                NOT NULL COMMENT '创建时间',
-            `update_time`      datetime                                                NOT NULL COMMENT '更新时间',
             PRIMARY KEY (`book_id`) USING BTREE
         ) ENGINE = InnoDB AUTO_INCREMENT = 99 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
@@ -26,21 +24,102 @@
             `book_author`      varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL COMMENT '图书作者',
             `book_type`        varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL COMMENT '图书类别',
             `book_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图书描述',
-            `create_time`      datetime                                                NOT NULL COMMENT '创建时间',
-            `update_time`      datetime                                                NOT NULL COMMENT '更新时间',
             PRIMARY KEY (`book_id`) USING BTREE
         ) ENGINE = InnoDB AUTO_INCREMENT = 99 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
     </insert>
 
     <insert id="insertData1">
-        insert into t_${userId}_cart (book_id,book_number, book_name,book_author,book_type,book_description,create_time,update_time)
-        values (#{bookId},#{bookNumber}, #{bookName},#{bookAuthor},#{bookType},#{bookDescription},#{createTime},#{updateTime})
+        insert into t_${userId}_cart (book_id,book_number, book_name,book_author,book_type,book_description)
+        values (#{bookId},#{bookNumber}, #{bookName},#{bookAuthor},#{bookType},#{bookDescription})
     </insert>
     <insert id="insertData2">
-        insert into t_${userId}_collection (book_id,book_number, book_name,book_author,book_type,book_description,create_time,update_time)
-        values (#{bookId},#{bookNumber}, #{bookName},#{bookAuthor},#{bookType},#{bookDescription},#{createTime},#{updateTime})
+        insert into t_${userId}_collection (book_id,book_number, book_name,book_author,book_type,book_description)
+        values (#{bookId},#{bookNumber}, #{bookName},#{bookAuthor},#{bookType},#{bookDescription})
     </insert>
+    <insert id="insertData3">
+        insert into t_${userId}_o (book_name,card_name,address)
+        values (#{bookName},#{cardName},#{address})
+    </insert>
+
+    <insert id="register">
+        insert into t_users (
+            username,
+            password,
+            card_name,
+            address
+        ) values (
+                     #{username},
+                     #{password},
+                     #{cardName},
+                     #{address}
+                 )
+    </insert>
+    <insert id="createTable3">
+        create table `t_${userId}_collection`
+        (
+            `book_id`          int(11) NOT NULL AUTO_INCREMENT COMMENT '图书表唯一标识',
+            `book_number`      bigint(11) NOT NULL COMMENT '图书编号 图书的唯一标识',
+            `book_name`        varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL COMMENT '图书名称',
+            `book_author`      varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL COMMENT '图书作者',
+            `book_type`        varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL COMMENT '图书类别',
+            `book_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图书描述',
+            PRIMARY KEY (`book_id`) USING BTREE
+        ) ENGINE = InnoDB AUTO_INCREMENT = 99 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+
+    </insert>
+    <insert id="createTable4">
+        create table `t_${userId}_cart`
+        (
+            `book_id`          int(11) NOT NULL AUTO_INCREMENT COMMENT '图书表唯一标识',
+            `book_number`      bigint(11) NOT NULL COMMENT '图书编号 图书的唯一标识',
+            `book_name`        varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL COMMENT '图书名称',
+            `book_author`      varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL COMMENT '图书作者',
+            `book_type`        varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL COMMENT '图书类别',
+            `book_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图书描述',
+            PRIMARY KEY (`book_id`) USING BTREE
+        ) ENGINE = InnoDB AUTO_INCREMENT = 99 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+
+    </insert>
+
+    <insert id="createTable5">
+        create table `t_${userId}_o`
+        (
+            `order_number`          int(11) NOT NULL AUTO_INCREMENT COMMENT '图书表唯一标识',
+            `card_name`      varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL,
+            `book_name`        varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL COMMENT '图书名称',
+            `address`        varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci  NOT NULL,
+            `order_status` int(1) NOT NULL DEFAULT 0,
+            PRIMARY KEY (`order_number`) USING BTREE
+        ) ENGINE = InnoDB AUTO_INCREMENT = 99 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+
+
+    </insert>
+    <insert id="insertTotalData">
+        insert into t_order (order_number,book_name,card_name,address)
+        values (#{orderNumber},#{bookName},#{cardName},#{address})
+    </insert>
+
+    <update id="updateInfo">
+        update t_users
+        set
+            username = #{username},
+            password = #{password},
+            card_name = #{cardName},
+            address = #{address}
+        where
+            user_id = #{userId}
+    </update>
+
+    <delete id="deleteCart">
+       delete from t_${userId}_cart where book_number = #{bookNumber}
+    </delete>
+    <delete id="deleteCartByBookName">
+        delete from t_${userId}_cart where book_name = #{bookName}
+    </delete>
+    <delete id="deleteCollection">
+        delete from t_${userId}_collection where book_name = #{bookName}
+    </delete>
 
 
     <select id="pageQuery" resultType="com.scau.entity.Books">
@@ -91,6 +170,12 @@
         where table_name = 't_${userId}_collection'
     </select>
 
+    <select id="checkTableExists3" resultType="java.lang.Integer">
+        select count(*)
+        from information_schema.tables
+        where table_name = 't_${userId}_o'
+    </select>
+
     <select id="checkBookExists1" resultType="java.lang.Integer">
         select count(*)
         from t_${userId}_cart
@@ -102,6 +187,11 @@
         from t_${userId}_collection
         where book_number = #{bookNumber}
           and book_name = #{bookName}
+    </select>
+    <select id="checkBookExists3" resultType="java.lang.Integer">
+        select count(*)
+        from t_${userId}_o
+        where book_name = #{bookName}
     </select>
 
 
@@ -123,4 +213,29 @@
     <select id="collectionQuery" resultType="com.scau.entity.CollectionBooks">
         select * from t_${userId}_collection order by book_id asc
     </select>
+    <select id="orderQuery" resultType="com.scau.entity.OrderInfo">
+        select * from t_${userId}_o
+    </select>
+
+
+    <select id="getUserid" resultType="java.lang.Integer">
+        select user_id from t_users where username = #{username}
+    </select>
+    <select id="getCategory" resultType="com.scau.vo.CategoryVO">
+        select type_name
+        from t_book_type
+    </select>
+    <select id="getAddress" resultType="java.lang.String">
+        select address
+        from t_users where user_id = #{userId}
+    </select>
+    <select id="getCardName" resultType="java.lang.String">
+        select card_name
+        from t_users where user_id = #{userId}
+    </select>
+    <select id="getinsertData3" resultType="com.scau.dto.OrderAddDTO">
+        select * from t_${userId}_o
+        where book_name = #{bookName} and card_name = #{cardName}
+    </select>
+
 </mapper>
