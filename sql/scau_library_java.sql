@@ -11,11 +11,64 @@
  Target Server Version : 50743 (5.7.43-log)
  File Encoding         : 65001
 
- Date: 08/10/2023 23:41:44
+ Date: 09/10/2023 17:26:55
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for t_2555_cart
+-- ----------------------------
+DROP TABLE IF EXISTS `t_2555_cart`;
+CREATE TABLE `t_2555_cart`  (
+  `book_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '图书表唯一标识',
+  `book_number` bigint(11) NOT NULL COMMENT '图书编号 图书的唯一标识',
+  `book_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图书名称',
+  `book_author` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图书作者',
+  `book_type` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图书类别',
+  `book_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图书描述',
+  PRIMARY KEY (`book_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 99 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of t_2555_cart
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_2555_collection
+-- ----------------------------
+DROP TABLE IF EXISTS `t_2555_collection`;
+CREATE TABLE `t_2555_collection`  (
+  `book_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '图书表唯一标识',
+  `book_number` bigint(11) NOT NULL COMMENT '图书编号 图书的唯一标识',
+  `book_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图书名称',
+  `book_author` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图书作者',
+  `book_type` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图书类别',
+  `book_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图书描述',
+  PRIMARY KEY (`book_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 99 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of t_2555_collection
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for t_2555_o
+-- ----------------------------
+DROP TABLE IF EXISTS `t_2555_o`;
+CREATE TABLE `t_2555_o`  (
+  `order_number` int(11) NOT NULL AUTO_INCREMENT COMMENT '图书表唯一标识',
+  `card_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `book_name` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '图书名称',
+  `address` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `order_status` int(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`order_number`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 99 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of t_2555_o
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for t_admins
@@ -111,21 +164,14 @@ CREATE TABLE `t_order`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `t_systeminfo`;
 CREATE TABLE `t_systeminfo`  (
-  `tele` int(10) NULL DEFAULT 123456,
-  `postcode` int(6) NULL DEFAULT 529800
+  `tele` int(10) NULL DEFAULT NULL,
+  `postcode` int(10) NULL DEFAULT NULL
 ) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of t_systeminfo
 -- ----------------------------
-INSERT INTO `t_systeminfo` VALUES (123, 529800);
-INSERT INTO `t_systeminfo` VALUES (123, 529800);
-INSERT INTO `t_systeminfo` VALUES (123, 529800);
-INSERT INTO `t_systeminfo` VALUES (123, 529800);
-INSERT INTO `t_systeminfo` VALUES (123, 529800);
-INSERT INTO `t_systeminfo` VALUES (123, 529800);
-INSERT INTO `t_systeminfo` VALUES (123, 529800);
-INSERT INTO `t_systeminfo` VALUES (123, 529800);
+INSERT INTO `t_systeminfo` VALUES (123456, 529800);
 
 -- ----------------------------
 -- Table structure for t_type
