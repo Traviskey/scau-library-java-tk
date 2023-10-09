@@ -43,7 +43,7 @@
         set
            tele = #{tele},
            postcode = #{postcode}
-
+        where tele = #{primetele} and postcode = #{primepostcode}
     </update>
     <update id="setBookType">
         update t_books

@@ -9,4 +9,8 @@ public class SystemDTO implements Serializable {
     private Integer tele;
 
     private Integer postcode;
+
+    private Integer primetele;
+
+    private Integer primepostcode;
 }

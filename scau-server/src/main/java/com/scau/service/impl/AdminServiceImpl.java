@@ -176,6 +176,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void updateInfo(SystemDTO systemDTO) {
+        SystemVO systemVO = adminMapper.getsystem();
+        systemDTO.setPrimetele(systemVO.getTele());
+        systemDTO.setPrimepostcode(systemVO.getPostcode());
         adminMapper.updateInfo(systemDTO);
     }
 
